@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
-import '../models/todo.dart';
+import '../models/note.dart';
 
-class TodoCard extends StatelessWidget {
-  final Todo todo;
+class NoteCard extends StatelessWidget {
+  final Note note;
   final VoidCallback onDelete;
 
-  const TodoCard({
+  const NoteCard({
     Key? key,
     required this.onDelete,
-    required this.todo,
+    required this.note,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(todo.title),
+      title: Text(note.title),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(todo.description),
+          Text(note.description),
           const SizedBox(height: 8),
           Text(
-            todo.createdAt.toIso8601String(),
+            note.createdAt.toIso8601String(),
             style: const TextStyle(fontSize: 12, color: Colors.black),
           ),
         ],

@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:todome/screens/home.dart';
 
 void main() {
-  runApp(const TodoMeApp());
+  runApp(const NoteApp());
 }
 
-class TodoMeApp extends StatelessWidget {
-  const TodoMeApp({Key? key}) : super(key: key);
+class NoteApp extends StatelessWidget {
+  const NoteApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

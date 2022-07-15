@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:todome/models/todo.dart';
+import 'package:todome/models/note.dart';
 
-import '../components/todo_card.dart';
+import '../components/note_card.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -13,7 +13,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int count = 0;
 
-  List<Todo> todoList = [];
+  List<Note> noteList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -23,14 +23,14 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: ListView(
         children: [
-          for (int index = 0; index < todoList.length; index++) ...[
-            TodoCard(
+          for (int index = 0; index < noteList.length; index++) ...[
+            NoteCard(
                 onDelete: () {
                   setState(() {
-                    todoList.removeAt(index);
+                    noteList.removeAt(index);
                   });
                 },
-                todo: todoList[index]),
+                note: noteList[index]),
           ],
         ],
       ),
@@ -38,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
         onPressed: () {
           count = count + 1;
 
-          final todo = Todo(
+          final note = Note(
             id: "$count",
             title: "Hey $count",
             description: "descrioption $count",
@@ -46,10 +46,10 @@ class _HomeScreenState extends State<HomeScreen> {
           );
 
           setState(() {
-            todoList.add(todo);
+            noteList.add(note);
           });
 
-          print(todoList.length);
+          print(noteList.length);
         },
         child: const Icon(Icons.add),
       ),
