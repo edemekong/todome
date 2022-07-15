@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todome/models/note.dart';
+import 'package:todome/screens/note_screen.dart';
 
 import '../components/note_card.dart';
 
@@ -36,23 +37,31 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          count = count + 1;
+          Navigator.push<Map<String, dynamic>>(context, MaterialPageRoute(builder: (context) => const NoteScreen()))
+              .then(
+            (value) {
+              if (value != null) {
+                final title = value["title"];
+                final description = value["description"];
 
-          final note = Note(
-            id: "$count",
-            title: "Hey $count",
-            description: "descrioption $count",
-            createdAt: DateTime.now(),
+                final newNote = Note(
+                  id: DateTime.now().toIso8601String(),
+                  title: title,
+                  description: description,
+                  createdAt: DateTime.now(),
+                );
+
+                setState(() {
+                  noteList.add(newNote);
+                });
+              }
+            },
           );
-
-          setState(() {
-            noteList.add(note);
-          });
-
-          print(noteList.length);
         },
         child: const Icon(Icons.add),
       ),
     );
   }
 }
+
+sum() => 1 + 2;
