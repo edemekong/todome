@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todome/models/note.dart';
-import 'package:todome/screens/note_screen.dart';
+import 'package:todome/screens/add_note.dart';
 
 import '../components/note_card.dart';
 
@@ -24,8 +24,26 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: ListView(
         children: [
-          for (int index = 0; index < noteList.length; index++) ...[
+          for (int index = 0; index < noteList.length; index++) ...<Widget>[
             NoteCard(
+                ontTap: () {
+                  Navigator.push<Note>(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AddNoteScreen(
+                                note: noteList[index],
+                              ))).then(
+                    (value) {
+                      if (value != null) {
+                        final index = noteList.indexWhere((note) => note.id == value.id);
+                        setState(() {
+                          noteList.removeAt(index);
+                          noteList.insert(index, value);
+                        });
+                      }
+                    },
+                  );
+                },
                 onDelete: () {
                   setState(() {
                     noteList.removeAt(index);
@@ -37,22 +55,11 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push<Map<String, dynamic>>(context, MaterialPageRoute(builder: (context) => const NoteScreen()))
-              .then(
+          Navigator.push<Note>(context, MaterialPageRoute(builder: (context) => const AddNoteScreen())).then(
             (value) {
               if (value != null) {
-                final title = value["title"];
-                final description = value["description"];
-
-                final newNote = Note(
-                  id: DateTime.now().toIso8601String(),
-                  title: title,
-                  description: description,
-                  createdAt: DateTime.now(),
-                );
-
                 setState(() {
-                  noteList.add(newNote);
+                  noteList.add(value);
                 });
               }
             },

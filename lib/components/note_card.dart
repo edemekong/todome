@@ -4,16 +4,19 @@ import '../models/note.dart';
 class NoteCard extends StatelessWidget {
   final Note note;
   final VoidCallback onDelete;
+  final VoidCallback ontTap;
 
   const NoteCard({
     Key? key,
     required this.onDelete,
     required this.note,
+    required this.ontTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      onTap: ontTap,
       title: Text(note.title),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
