@@ -21,7 +21,10 @@ class NoteCard extends StatelessWidget {
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(note.description),
+          Text(
+            note.description,
+            maxLines: 2,
+          ),
           const SizedBox(height: 8),
           Text(
             note.createdAt.toIso8601String(),

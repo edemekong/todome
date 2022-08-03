@@ -14,8 +14,12 @@ class _NoteScreenState extends State<AddNoteScreen> {
   String title = "";
   String description = "";
 
+  late FocusNode myFocusNode;
+
   @override
   void initState() {
+    myFocusNode = FocusNode();
+
     title = widget.note?.title ?? "";
     description = widget.note?.description ?? "";
 
@@ -52,36 +56,45 @@ class _NoteScreenState extends State<AddNoteScreen> {
           },
         ),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          children: [
-            TextField(
-              controller: TextEditingController(text: widget.note?.title),
-              style: const TextStyle(fontSize: 20),
-              onChanged: (String? value) {
-                title = value!;
-              },
-              decoration: const InputDecoration(
-                hintText: "Title",
-                border: InputBorder.none,
-                hintStyle: TextStyle(fontSize: 20),
-              ),
+      body: Column(
+        children: [
+          TextField(
+            controller: TextEditingController(text: widget.note?.title),
+            style: const TextStyle(fontSize: 20),
+            onChanged: (String? value) {
+              title = value!;
+            },
+            decoration: const InputDecoration(
+              hintText: "Title",
+              border: InputBorder.none,
+              hintStyle: TextStyle(fontSize: 20),
             ),
-            const SizedBox(height: 24),
-            TextField(
+          ),
+          const SizedBox(height: 24),
+          Expanded(
+            child: TextField(
+              focusNode: myFocusNode,
+              onTap: () {
+                if (myFocusNode.hasFocus) {
+                  myFocusNode.unfocus();
+                } else {
+                  myFocusNode.requestFocus();
+                }
+              },
               controller: TextEditingController(text: widget.note?.description),
               onChanged: (String? value) {
                 description = value!;
               },
               maxLines: null,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
+                fillColor: Theme.of(context).scaffoldBackgroundColor,
+                filled: true,
                 hintText: "Write something...",
                 border: InputBorder.none,
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -22,36 +22,36 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: const Text("Todome"),
       ),
-      body: ListView(
-        children: [
-          for (int index = 0; index < noteList.length; index++) ...<Widget>[
-            NoteCard(
-                ontTap: () {
-                  Navigator.push<Note>(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => AddNoteScreen(
-                                note: noteList[index],
-                              ))).then(
-                    (value) {
-                      if (value != null) {
-                        final index = noteList.indexWhere((note) => note.id == value.id);
-                        setState(() {
-                          noteList.removeAt(index);
-                          noteList.insert(index, value);
-                        });
-                      }
-                    },
-                  );
+      body: ListView.builder(
+        itemCount: noteList.length,
+        itemBuilder: (context, index) {
+          return NoteCard(
+            onDelete: () {
+              setState(() {
+                noteList.removeAt(index);
+              });
+            },
+            note: noteList[index],
+            ontTap: () {
+              Navigator.push<Note>(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AddNoteScreen(
+                            note: noteList[index],
+                          ))).then(
+                (value) {
+                  if (value != null) {
+                    final index = noteList.indexWhere((note) => note.id == value.id);
+                    setState(() {
+                      noteList.removeAt(index);
+                      noteList.insert(index, value);
+                    });
+                  }
                 },
-                onDelete: () {
-                  setState(() {
-                    noteList.removeAt(index);
-                  });
-                },
-                note: noteList[index]),
-          ],
-        ],
+              );
+            },
+          );
+        },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -70,5 +70,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-
-sum() => 1 + 2;
