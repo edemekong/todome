@@ -22,51 +22,82 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: const Text("Todome"),
       ),
-      body: ListView.builder(
-        itemCount: noteList.length,
-        itemBuilder: (context, index) {
-          return NoteCard(
-            onDelete: () {
-              setState(() {
-                noteList.removeAt(index);
-              });
+      body: Builder(builder: (context) {
+        if (noteList.isEmpty) {
+          return GestureDetector(
+            onTap: () {
+              _addNote();
             },
-            note: noteList[index],
-            ontTap: () {
-              Navigator.push<Note>(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => AddNoteScreen(
-                            note: noteList[index],
-                          ))).then(
-                (value) {
-                  if (value != null) {
-                    final index = noteList.indexWhere((note) => note.id == value.id);
-                    setState(() {
-                      noteList.removeAt(index);
-                      noteList.insert(index, value);
-                    });
-                  }
-                },
-              );
-            },
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Icon(
+                    Icons.add_box_outlined,
+                    size: 100,
+                  ),
+                  Text("Add Note"),
+                ],
+              ),
+            ),
           );
-        },
-      ),
+        }
+        return ListView.builder(
+          itemCount: noteList.length,
+          itemBuilder: (context, index) {
+            return NoteCard(
+              onDelete: () {
+                setState(() {
+                  noteList.removeAt(index);
+                });
+              },
+              note: noteList[index],
+              ontTap: () {
+                Navigator.push<Note>(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AddNoteScreen(
+                              note: noteList[index],
+                            ))).then(
+                  (value) {
+                    if (value != null) {
+                      final index = noteList.indexWhere((note) => note.id == value.id);
+                      setState(() {
+                        noteList.removeAt(index);
+                        noteList.insert(index, value);
+                      });
+                    }
+                  },
+                );
+              },
+            );
+          },
+        );
+      }),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push<Note>(context, MaterialPageRoute(builder: (context) => const AddNoteScreen())).then(
-            (value) {
-              if (value != null) {
-                setState(() {
-                  noteList.add(value);
-                });
-              }
-            },
-          );
+          _addNote();
         },
         child: const Icon(Icons.add),
       ),
     );
+  }
+
+  _addNote() {
+    Navigator.push<Note>(context, MaterialPageRoute(builder: (context) => const AddNoteScreen())).then(
+      (value) {
+        if (value != null) {
+          setState(() {
+            noteList.add(value);
+          });
+        }
+      },
+    );
+
+    const snackBar = SnackBar(
+      content: Text('Yay! A SnackBar!'),
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }

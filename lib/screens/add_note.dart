@@ -19,7 +19,6 @@ class _NoteScreenState extends State<AddNoteScreen> {
   @override
   void initState() {
     myFocusNode = FocusNode();
-
     title = widget.note?.title ?? "";
     description = widget.note?.description ?? "";
 
@@ -64,11 +63,15 @@ class _NoteScreenState extends State<AddNoteScreen> {
             onChanged: (String? value) {
               title = value!;
             },
+            textInputAction: TextInputAction.done,
             decoration: const InputDecoration(
               hintText: "Title",
               border: InputBorder.none,
               hintStyle: TextStyle(fontSize: 20),
             ),
+            onSubmitted: (value) {
+              myFocusNode.requestFocus();
+            },
           ),
           const SizedBox(height: 24),
           Expanded(
